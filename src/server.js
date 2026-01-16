@@ -19,10 +19,11 @@ connectDB().then(() => {
 
 const PORT = process.env.PORT || 5000;
 const HOST = '0.0.0.0';
+const SERVER_URL = process.env.SERVER_URL || `http://${HOST}:${PORT}`;
 
 const server = app.listen(PORT, HOST, () => {
   console.log(`✅ Servidor corriendo en http://${HOST}:${PORT}`);
-  console.log(`📱 Accesible desde: http://192.168.68.60:${PORT}`);
+  console.log(`📱 Accesible desde: ${SERVER_URL}`);
 });
 
 // Inicializar socket.io

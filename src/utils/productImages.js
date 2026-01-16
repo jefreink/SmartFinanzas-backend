@@ -6,7 +6,7 @@
 
 // Base URL para las imágenes (cambiar según ambiente)
 const getImageUrl = (productName) => {
-  const baseUrl = process.env.SERVER_URL || 'http://localhost:5000';
+  const baseUrl = process.env.SERVER_URL || 'https://smartfinanzas-backend.onrender.com';
   const ext = '.png';
   // Normalizar nombre del producto para buscar archivo
   const normalized = productName
