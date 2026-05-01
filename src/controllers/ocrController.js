@@ -7,10 +7,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const fs = require('fs');
 const OcrUsage = require('../models/OcrUsage');
 const { improveProductName, improveMerchantName, learnFromCorrection, getLearningStats } = require('../utils/ocrLearning');
-
-// Google Gemini Configuration
-const GEMINI_API_KEY = 'AIzaSyBlB_SJL50iK9nnwHVW-EYZUWSdNXD3Z7Q';
-const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+const apiKeyService = require('../services/apiKeyService');
 
 /**
  * Helper para obtener/actualizar el uso mensual de OCR
@@ -244,6 +241,19 @@ const parseReceiptText = (text) => {
 exports.scanReceipt = async (req, res) => {
   console.log('🎯 scanReceipt iniciado');
   try {
+    // Obtener API key de la base de datos
+    const GEMINI_API_KEY = await apiKeyService.getApiKey('gemini');
+    
+    if (!GEMINI_API_KEY) {
+      return res.status(503).json({
+        success: false,
+        error: 'API key de Gemini no configurada',
+        message: 'El servicio de OCR no está disponible. Contacta al administrador.'
+      });
+    }
+
+    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+
     let base64Image;
     let mimeType;
     
@@ -347,6 +357,7 @@ exports.scanReceipt = async (req, res) => {
   "merchant": "nombre del comercio o tienda",
   "date": "fecha en formato YYYY-MM-DD",
   "totalAmount": número total de la compra en pesos ENTEROS,
+  "propina": número de la propina en pesos ENTEROS,
   "items": [
     {
       "name": "nombre del producto",
@@ -361,6 +372,7 @@ REGLAS CRÍTICAS:
 - Los precios DEBEN ser números ENTEROS sin decimales (ej: 1190, no 1.190 o 1,190)
 - La cantidad es el número de unidades de CADA producto
 - Si la boleta dice "Leche x2" o "2x1190", quantity=2 y price=1190 (precio unitario)
+- si la boleta dice "Hamburguesa x2", se debe crear un item por cada unidad con quantity=1
 - Los precios deben ser el valor UNITARIO (el precio de UNA unidad)
 - Si no puedes identificar algún campo, usa null
 - Las categorías deben ser exactamente una de las mencionadas

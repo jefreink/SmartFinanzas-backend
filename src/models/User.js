@@ -70,7 +70,11 @@ const UserSchema = new mongoose.Schema(
     financialProfile: {
       monthlyBudget: { type: Number, default: 0 },
       survivalMode: { type: Boolean, default: false }, // Se activa si freeMoney < 10%
-      viceTaxRate: { type: Number, default: 0.10 } // 10% por defecto
+      viceTaxRate: { type: Number, default: 0.10 }, // 10% por defecto
+      viceCategories: {
+        type: [String],
+        default: ['Alcohol', 'Tabaco', 'Fast Food', 'Juegos de Azar', 'Fiesta', 'Vicio', 'Cigarrillos']
+      }
     },
     isSurvivalMode: {
       type: Boolean,

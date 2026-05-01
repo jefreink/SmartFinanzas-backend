@@ -4,12 +4,21 @@
  */
 const app = require('./app');
 const dotenv = require('dotenv');
+const path = require('path');
+const fs = require('fs');
 const connectDB = require('./config/db');
 const seedCurrencies = require('./seeds/currencySeed');
 const seedUsers = require('./seeds/userSeed');
 
-// Cargar variables de entorno
-dotenv.config();
+// Cargar variables de entorno (.env.local tiene prioridad sobre .env)
+const envLocalPath = path.resolve(__dirname, '../.env.local');
+if (fs.existsSync(envLocalPath)) {
+  console.log('🔧 Cargando configuración local (.env.local)');
+  dotenv.config({ path: envLocalPath });
+} else {
+  console.log('🔧 Cargando configuración de producción (.env)');
+  dotenv.config();
+}
 
 // Conectar a la base de datos y ejecutar seeds
 connectDB().then(() => {

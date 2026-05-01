@@ -34,10 +34,9 @@ const uploadBase64Image = async (req, res) => {
         const filePath = path.join(uploadsDir, finalFilename);
         await fs.writeFile(filePath, buffer);
 
-        // Devolver URL usando el mismo host desde el que se hizo la petición
-        const requestHost = req.get('host'); // Incluye ip:puerto
-        const protocol = req.protocol || 'http';
-        const imageUrl = `${protocol}://${requestHost}/uploads/${finalFilename}`;
+        // Devolver URL usando SERVER_URL (consistente en todas las plataformas)
+        const serverUrl = process.env.SERVER_URL || 'https://smartfinanzas-backend.onrender.com';
+        const imageUrl = `${serverUrl}/uploads/${finalFilename}`;
         
         console.log('✅ Imagen guardada:', finalFilename);
         console.log('✅ URL generada:', imageUrl);
@@ -67,10 +66,9 @@ const uploadImage = async (req, res) => {
 
         console.log('✅ Archivo recibido:', req.file.filename);
 
-        // Usar el mismo host desde el que se hizo la petición
-        const requestHost = req.get('host'); // Incluye ip:puerto
-        const protocol = req.protocol || 'http';
-        const imageUrl = `${protocol}://${requestHost}/uploads/${req.file.filename}`;
+        // Usar SERVER_URL (consistente en todas las plataformas)
+        const serverUrl = process.env.SERVER_URL || 'https://smartfinanzas-backend.onrender.com';
+        const imageUrl = `${serverUrl}/uploads/${req.file.filename}`;
 
         console.log('✅ URL generada:', imageUrl);
 
@@ -118,10 +116,9 @@ const uploadInventoryImage = async (req, res) => {
         const filePath = path.join(inventoryDir, finalFilename);
         await fs.writeFile(filePath, buffer);
 
-        // Devolver URL
-        const requestHost = req.get('host');
-        const protocol = req.protocol || 'http';
-        const imageUrl = `${protocol}://${requestHost}/uploads/inventory/${finalFilename}`;
+        // Devolver URL usando SERVER_URL (consistente en todas las plataformas)
+        const serverUrl = process.env.SERVER_URL || 'https://smartfinanzas-backend.onrender.com';
+        const imageUrl = `${serverUrl}/uploads/inventory/${finalFilename}`;
         
         console.log('✅ Imagen de inventario guardada:', finalFilename);
         console.log('✅ URL generada:', imageUrl);

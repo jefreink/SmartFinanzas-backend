@@ -5,6 +5,7 @@
 
 const ProsperityIdea = require('../models/ProsperityIdea');
 const User = require('../models/User');
+const { addPoints } = require('./gamificationController');
 
 /**
  * @desc    Obtener ideas personalizadas (no vistas)
@@ -208,6 +209,9 @@ const implementIdea = async (req, res) => {
     });
 
     await user.save();
+
+    // Gamification
+    addPoints(req.user.id, 50).catch(console.error);
 
     res.status(200).json({
       success: true,

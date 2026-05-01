@@ -1,125 +1,33 @@
-/**
- * Trip Model
- * Modelo para gestionar viajes compartidos con gastos divididos
- */
-
 const mongoose = require('mongoose');
 
-const TripSchema = new mongoose.Schema(
-  {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    description: {
-      type: String,
-      trim: true,
-    },
-    destination: {
-      type: String,
-      trim: true,
-    },
-    startDate: {
-      type: Date,
-      required: true,
-    },
-    endDate: {
-      type: Date,
-    },
-    coverImage: {
-      type: String,
-      default: null,
-    },
-    participants: [
-      {
-        userId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
-        },
-        name: {
-          type: String,
-          required: true,
-        },
-        avatar: String,
-        email: String,
-      },
-    ],
-    expenses: [
-      {
-        _id: mongoose.Schema.Types.ObjectId,
-        description: String,
-        amount: Number,
-        currency: {
-          type: String,
-          default: 'USD',
-        },
-        paidBy: {
-          userId: mongoose.Schema.Types.ObjectId,
-          name: String,
-        },
-        splitBetween: [
-          {
-            userId: mongoose.Schema.Types.ObjectId,
-            name: String,
-            amount: Number,
-          },
-        ],
-        date: Date,
-        category: {
-          type: String,
-          enum: ['food', 'transport', 'accommodation', 'activities', 'other'],
-          default: 'other',
-        },
-      },
-    ],
-    status: {
-      type: String,
-      enum: ['active', 'completed', 'cancelled'],
-      default: 'active',
-    },
-    totalAmount: {
-      type: Number,
-      default: 0,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-    },
+const TripSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+  name: { type: String, required: true, trim: true },
+  destination: { type: String, trim: true },
+  startDate: { type: Date },
+  endDate: { type: Date },
+  budget: { type: Number, default: 0 },
+  currency: { type: String, default: 'CLP' },
+  status: {
+    type: String,
+    enum: ['planning', 'active', 'completed', 'cancelled'],
+    default: 'planning'
   },
-  { timestamps: true }
-);
+  participants: [{
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // If they are a registered user
+    contactId: { type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }, // If they are a contact
+    name: { type: String }, // Fallback name
+    isMe: { type: Boolean, default: false }
+  }],
+  description: { type: String },
+  coverImage: { type: String } // URL for trip cover
+}, { timestamps: true });
 
-// Virtual para calcular balances entre participantes
-TripSchema.virtual('balances').get(function() {
-  const balances = {};
-
-  // Inicializar balances
-  this.participants.forEach((p) => {
-    balances[p.userId || p.name] = 0;
-  });
-
-  // Calcular balances
-  this.expenses.forEach((expense) => {
-    const paidByKey = expense.paidBy.userId || expense.paidBy.name;
-    balances[paidByKey] = (balances[paidByKey] || 0) + expense.amount;
-
-    expense.splitBetween.forEach((split) => {
-      const splitKey = split.userId || split.name;
-      balances[splitKey] = (balances[splitKey] || 0) - split.amount;
-    });
-  });
-
-  return balances;
+// Virtual for duration?
+TripSchema.virtual('durationDays').get(function () {
+  if (!this.startDate || !this.endDate) return 0;
+  const diffTime = Math.abs(this.endDate - this.startDate);
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 });
 
 module.exports = mongoose.model('Trip', TripSchema);

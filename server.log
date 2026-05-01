@@ -1,0 +1,1295 @@
+📁 Uploads directory: /Users/jefreink/Programacion/SmartFinanzas/backend/uploads
+🔧 Cargando configuración local (.env.local)
+[dotenv@17.2.3] injecting env (11) from .env.local -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+🔧 Usando MONGO_URI explícita: mongodb://localhost:27017/smartFinanzas
+(node:28011) [MONGOOSE] Warning: Duplicate schema index on {"name":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✅ Servidor corriendo en http://0.0.0.0:5000
+📱 Accesible desde: http://localhost:5000
+✅ MongoDB Conectado: localhost
+📊 Base de datos: smartFinanzas
+✓ Las monedas ya existen en la base de datos
+✅ Usuario de prueba ya existe
+📨 GET /api/auth/me
+🔐 Middleware protect - path: /me
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions/projections
+🔐 Middleware protect - path: /projections
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions/stats
+🔐 Middleware protect - path: /stats
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 febrero de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 marzo de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 abril de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 mayo de 2026: 266666.6666666667 (1 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 junio de 2026: 266666.6666666667 (1 pagos)
+📨 GET /api/trips
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /uploads/9ec9a3749155d3c19af043f03cc90e94.png
+📨 GET /api/currencies
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants/suggestions
+🔐 Middleware protect - path: /suggestions
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 POST /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+ℹ️  Skipping transactions (Standalone local MongoDB detected)
+📥 Creating transaction with data: {
+  totalAmount: 150000,
+  type: 'income',
+  category: 'other',
+  merchant: 'Sueldo Final',
+  paymentMethod: undefined,
+  items: 0
+}
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions/stats
+🔐 Middleware protect - path: /stats
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions/projections
+🔐 Middleware protect - path: /projections
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/trips
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 febrero de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 marzo de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 abril de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 mayo de 2026: 266666.6666666667 (1 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 junio de 2026: 266666.6666666667 (1 pagos)
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants/suggestions
+🔐 Middleware protect - path: /suggestions
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 POST /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 POST /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+ℹ️  Skipping transactions (Standalone local MongoDB detected)
+📥 Creating transaction with data: {
+  totalAmount: 10000,
+  type: 'expense',
+  category: 'food',
+  merchant: 'Cafe Final',
+  paymentMethod: 'debit',
+  items: 0
+}
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/trips
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions/stats
+🔐 Middleware protect - path: /stats
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions/projections
+🔐 Middleware protect - path: /projections
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 febrero de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 marzo de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 abril de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 mayo de 2026: 266666.6666666667 (1 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 junio de 2026: 266666.6666666667 (1 pagos)
+📨 POST /api/auth/login
+📨 GET /api/transactions/stats
+🔐 Middleware protect - path: /stats
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions/projections
+🔐 Middleware protect - path: /projections
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/trips
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 febrero de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 marzo de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 abril de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 mayo de 2026: 266666.6666666667 (1 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 junio de 2026: 266666.6666666667 (1 pagos)
+📨 GET /uploads/9ec9a3749155d3c19af043f03cc90e94.png
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/merchants/suggestions
+🔐 Middleware protect - path: /suggestions
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 POST /api/upload/image64
+🔵 Upload route accessed: POST /image64
+📥 POST /image64 recibido
+🔐 Middleware protect - path: /image64
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📥 Solicitud de subida de imagen recibida
+✅ Imagen guardada: aad5863ef14d948dfb3097ea443fc526.png
+✅ URL generada: http://localhost:5000/uploads/aad5863ef14d948dfb3097ea443fc526.png
+📨 GET /uploads/aad5863ef14d948dfb3097ea443fc526.png
+📨 GET /api/auth/me
+🔐 Middleware protect - path: /me
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions/stats
+🔐 Middleware protect - path: /stats
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions/projections
+🔐 Middleware protect - path: /projections
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/trips
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 febrero de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 marzo de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 abril de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 mayo de 2026: 266666.6666666667 (1 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 junio de 2026: 266666.6666666667 (1 pagos)
+📨 GET /uploads/9ec9a3749155d3c19af043f03cc90e94.png
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants/suggestions
+🔐 Middleware protect - path: /suggestions
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 POST /api/upload/image64
+🔵 Upload route accessed: POST /image64
+📥 POST /image64 recibido
+🔐 Middleware protect - path: /image64
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📥 Solicitud de subida de imagen recibida
+✅ Imagen guardada: aad5863ef14d948dfb3097ea443fc526.png
+✅ URL generada: http://localhost:5000/uploads/aad5863ef14d948dfb3097ea443fc526.png
+📨 GET /uploads/aad5863ef14d948dfb3097ea443fc526.png
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/contact/list
+🔐 Middleware protect - path: /list
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/auth/me
+🔐 Middleware protect - path: /me
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions/stats
+🔐 Middleware protect - path: /stats
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions/projections
+🔐 Middleware protect - path: /projections
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/trips
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 febrero de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 marzo de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 abril de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 mayo de 2026: 266666.6666666667 (1 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 junio de 2026: 266666.6666666667 (1 pagos)
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /uploads/9ec9a3749155d3c19af043f03cc90e94.png
+📨 GET /api/trips/69618afd9ab8f86a37ee4f01
+🔐 Middleware protect - path: /69618afd9ab8f86a37ee4f01
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/trips/69618afd9ab8f86a37ee4f01
+🔐 Middleware protect - path: /69618afd9ab8f86a37ee4f01
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions/stats
+🔐 Middleware protect - path: /stats
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions/projections
+🔐 Middleware protect - path: /projections
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/trips
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 febrero de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 marzo de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 abril de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 mayo de 2026: 266666.6666666667 (1 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 junio de 2026: 266666.6666666667 (1 pagos)
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants/suggestions
+🔐 Middleware protect - path: /suggestions
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 POST /api/upload/image64
+🔵 Upload route accessed: POST /image64
+📥 POST /image64 recibido
+🔐 Middleware protect - path: /image64
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📥 Solicitud de subida de imagen recibida
+✅ Imagen guardada: aad5863ef14d948dfb3097ea443fc526.png
+✅ URL generada: http://localhost:5000/uploads/aad5863ef14d948dfb3097ea443fc526.png
+📨 GET /uploads/aad5863ef14d948dfb3097ea443fc526.png
+📨 GET /api/contact/list
+🔐 Middleware protect - path: /list
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/auth/me
+🔐 Middleware protect - path: /me
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions/stats
+🔐 Middleware protect - path: /stats
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions/projections
+🔐 Middleware protect - path: /projections
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/trips
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 febrero de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 marzo de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 abril de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 mayo de 2026: 266666.6666666667 (1 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 junio de 2026: 266666.6666666667 (1 pagos)
+📨 GET /uploads/9ec9a3749155d3c19af043f03cc90e94.png
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants/suggestions
+🔐 Middleware protect - path: /suggestions
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 POST /api/upload/image64
+🔵 Upload route accessed: POST /image64
+📥 POST /image64 recibido
+🔐 Middleware protect - path: /image64
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📥 Solicitud de subida de imagen recibida
+✅ Imagen guardada: aad5863ef14d948dfb3097ea443fc526.png
+✅ URL generada: http://localhost:5000/uploads/aad5863ef14d948dfb3097ea443fc526.png
+📨 GET /uploads/aad5863ef14d948dfb3097ea443fc526.png
+📨 GET /api/contact/list
+🔐 Middleware protect - path: /list
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/auth/me
+🔐 Middleware protect - path: /me
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions/projections
+🔐 Middleware protect - path: /projections
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions/stats
+🔐 Middleware protect - path: /stats
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 febrero de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 marzo de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 abril de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 mayo de 2026: 266666.6666666667 (1 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 junio de 2026: 266666.6666666667 (1 pagos)
+📨 GET /api/trips
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /uploads/9ec9a3749155d3c19af043f03cc90e94.png
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/merchants/suggestions
+🔐 Middleware protect - path: /suggestions
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 POST /api/upload/image64
+🔵 Upload route accessed: POST /image64
+📥 POST /image64 recibido
+🔐 Middleware protect - path: /image64
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📥 Solicitud de subida de imagen recibida
+✅ Imagen guardada: aad5863ef14d948dfb3097ea443fc526.png
+✅ URL generada: http://localhost:5000/uploads/aad5863ef14d948dfb3097ea443fc526.png
+📨 GET /uploads/aad5863ef14d948dfb3097ea443fc526.png
+📨 GET /api/contact/list
+🔐 Middleware protect - path: /list
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/auth/me
+🔐 Middleware protect - path: /me
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions/stats
+🔐 Middleware protect - path: /stats
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions/projections
+🔐 Middleware protect - path: /projections
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/trips
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 febrero de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 marzo de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 abril de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 mayo de 2026: 266666.6666666667 (1 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 junio de 2026: 266666.6666666667 (1 pagos)
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /uploads/9ec9a3749155d3c19af043f03cc90e94.png
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants/suggestions
+🔐 Middleware protect - path: /suggestions
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 POST /api/upload/image64
+🔵 Upload route accessed: POST /image64
+📥 POST /image64 recibido
+🔐 Middleware protect - path: /image64
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📥 Solicitud de subida de imagen recibida
+✅ Imagen guardada: aad5863ef14d948dfb3097ea443fc526.png
+✅ URL generada: http://localhost:5000/uploads/aad5863ef14d948dfb3097ea443fc526.png
+📨 GET /uploads/aad5863ef14d948dfb3097ea443fc526.png
+📨 GET /api/contact/list
+🔐 Middleware protect - path: /list
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/auth/me
+🔐 Middleware protect - path: /me
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions/stats
+🔐 Middleware protect - path: /stats
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions/projections
+🔐 Middleware protect - path: /projections
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/trips
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 febrero de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 marzo de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 abril de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 mayo de 2026: 266666.6666666667 (1 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 junio de 2026: 266666.6666666667 (1 pagos)
+📨 GET /uploads/9ec9a3749155d3c19af043f03cc90e94.png
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants/suggestions
+🔐 Middleware protect - path: /suggestions
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/ocr/usage
+🔐 Middleware protect - path: /usage
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/contact/list
+🔐 Middleware protect - path: /list
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 POST /api/upload/image64
+🔵 Upload route accessed: POST /image64
+📥 POST /image64 recibido
+🔐 Middleware protect - path: /image64
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📥 Solicitud de subida de imagen recibida
+✅ Imagen guardada: 5d767c389a570a963b864a7bb0f3ca54.png
+✅ URL generada: http://localhost:5000/uploads/5d767c389a570a963b864a7bb0f3ca54.png
+📨 GET /uploads/5d767c389a570a963b864a7bb0f3ca54.png
+📨 POST /api/upload/image64
+🔵 Upload route accessed: POST /image64
+📥 POST /image64 recibido
+🔐 Middleware protect - path: /image64
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📥 Solicitud de subida de imagen recibida
+✅ Imagen guardada: 5d767c389a570a963b864a7bb0f3ca54.png
+✅ URL generada: http://localhost:5000/uploads/5d767c389a570a963b864a7bb0f3ca54.png
+📨 POST /api/upload/image64
+🔵 Upload route accessed: POST /image64
+📥 POST /image64 recibido
+🔐 Middleware protect - path: /image64
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📥 Solicitud de subida de imagen recibida
+✅ Imagen guardada: bc33eccf59666f764272238112348e98.png
+✅ URL generada: http://localhost:5000/uploads/bc33eccf59666f764272238112348e98.png
+📨 GET /uploads/bc33eccf59666f764272238112348e98.png
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 POST /api/upload/image64
+🔵 Upload route accessed: POST /image64
+📥 POST /image64 recibido
+🔐 Middleware protect - path: /image64
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📥 Solicitud de subida de imagen recibida
+✅ Imagen guardada: aad5863ef14d948dfb3097ea443fc526.png
+✅ URL generada: http://localhost:5000/uploads/aad5863ef14d948dfb3097ea443fc526.png
+📨 GET /uploads/aad5863ef14d948dfb3097ea443fc526.png
+📨 POST /api/merchants
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 POST /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+ℹ️  Skipping transactions (Standalone local MongoDB detected)
+📥 Creating transaction with data: {
+  totalAmount: 19990,
+  type: 'expense',
+  category: 'activities',
+  merchant: 'Starbucks',
+  paymentMethod: 'debit',
+  items: 3
+}
+[SplitBill] Se crearon 1 deudas para la transacción dividida
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions/stats
+🔐 Middleware protect - path: /stats
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions/projections
+🔐 Middleware protect - path: /projections
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/trips
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 febrero de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 marzo de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 abril de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 mayo de 2026: 266666.6666666667 (1 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 junio de 2026: 266666.6666666667 (1 pagos)
+📨 GET /api/transactions/stats
+🔐 Middleware protect - path: /stats
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions/projections
+🔐 Middleware protect - path: /projections
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/trips
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 febrero de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 marzo de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 abril de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 mayo de 2026: 266666.6666666667 (1 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 junio de 2026: 266666.6666666667 (1 pagos)
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 POST /api/upload/image64
+🔵 Upload route accessed: POST /image64
+📥 POST /image64 recibido
+🔐 Middleware protect - path: /image64
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📥 Solicitud de subida de imagen recibida
+✅ Imagen guardada: aad5863ef14d948dfb3097ea443fc526.png
+✅ URL generada: http://localhost:5000/uploads/aad5863ef14d948dfb3097ea443fc526.png
+📨 GET /api/transactions/stats
+🔐 Middleware protect - path: /stats
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions/projections
+🔐 Middleware protect - path: /projections
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/trips
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 febrero de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 marzo de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 abril de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 mayo de 2026: 266666.6666666667 (1 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 junio de 2026: 266666.6666666667 (1 pagos)
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/auth/me
+🔐 Middleware protect - path: /me
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions/stats
+🔐 Middleware protect - path: /stats
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📨 GET /api/survival/status
+🔐 Middleware protect - path: /status
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/transactions/projections
+🔐 Middleware protect - path: /projections
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+📨 GET /api/trips
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 febrero de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 marzo de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📊 Projection: Pedalera line 6 helix lt - Total: 1200000, Cuotas: 4, Mensual: 300000
+📅 abril de 2026: 566666.6666666667 (2 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 mayo de 2026: 266666.6666666667 (1 pagos)
+📊 Projection: Mcbook pro m4 - Total: 1600000, Cuotas: 6, Mensual: 266666.6666666667
+📅 junio de 2026: 266666.6666666667 (1 pagos)
+📨 GET /uploads/aad5863ef14d948dfb3097ea443fc526.png
+📨 GET /uploads/9ec9a3749155d3c19af043f03cc90e94.png
+📨 GET /api/transactions
+🔐 Middleware protect - path: /
+🔐 Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR...
+✅ Token verificado para usuario: new ObjectId('695d6af3cf52a9061ffe6576')

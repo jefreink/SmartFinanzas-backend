@@ -8,6 +8,7 @@ const path = require('path');
 
 // Importar rutas
 const authRoutes = require('./routes/authRoutes');
+const errorHandler = require('./middleware/errorHandler');
 const transactionRoutes = require('./routes/transactionRoutes');
 const inventoryRoutes = require('./routes/inventoryRoutes');
 const financeRoutes = require('./routes/financeRoutes');
@@ -26,6 +27,9 @@ const subscriptionRoutes = require('./routes/subscriptionRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const subscriptionCatalogRoutes = require('./routes/subscriptionCatalogRoutes');
 const currencyRoutes = require('./routes/currencies');
+const apiKeyRoutes = require('./routes/apiKeyRoutes');
+const salaryRoutes = require('./routes/salaryRoutes');
+const financeControlRoutes = require('./routes/financeControlRoutes');
 
 const app = express();
 
@@ -36,8 +40,8 @@ app.use(cors());
 
 // Logging middleware para debugging
 app.use((req, res, next) => {
-    console.log(`📨 ${req.method} ${req.path}`);
-    next();
+  console.log(`📨 ${req.method} ${req.path}`);
+  next();
 });
 
 // Definir rutas base
@@ -58,8 +62,14 @@ app.use('/api/loans', loanRoutes);
 app.use('/api/common-products', commonProductRoutes);
 app.use('/api/subscriptions', subscriptionRoutes);
 app.use('/api/contacts', contactRoutes);
+app.use('/api/contact', contactRoutes); // Alias para compatibilidad con frontend
 app.use('/api/subscription-catalog', subscriptionCatalogRoutes);
 app.use('/api/currencies', currencyRoutes);
+app.use('/api/api-key', apiKeyRoutes);
+app.use('/api/family', require('./routes/familyRoutes'));
+app.use('/api/gamification', require('./routes/gamificationRoutes'));
+app.use('/api/salaries', salaryRoutes);
+app.use('/api/finance-control', financeControlRoutes);
 
 // Servir archivos estáticos de uploads con path absoluto
 const uploadsPath = path.join(__dirname, '../uploads');
@@ -71,5 +81,8 @@ console.log('📁 Uploads directory:', uploadsPath);
 app.get('/', (req, res) => {
   res.send('API SmartFinance AI Funcionando 🚀');
 });
+
+// Manejador global de errores (Debe ser el último middleware)
+app.use(errorHandler);
 
 module.exports = app;

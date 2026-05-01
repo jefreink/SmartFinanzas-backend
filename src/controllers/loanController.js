@@ -254,3 +254,83 @@ exports.deleteLoan = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };
+
+// Realizar pago parcial
+exports.makePartialPayment = async (req, res) => {
+  console.log('makePartialPayment called');
+  try {
+    const { id } = req.params;
+    const { amount, method } = req.body;
+
+    if (!amount || amount <= 0) {
+      return res.status(400).json({ success: false, message: 'Invalid amount' });
+    }
+
+    const loan = await Loan.findById(id);
+    if (!loan) return res.status(404).json({ success: false, message: 'Loan not found' });
+
+    const userId = req.user._id.toString();
+    const borrowerId = loan.borrower ? loan.borrower.toString() : null;
+    const lenderId = loan.lender ? loan.lender.toString() : null;
+
+    // El borrower o lender pueden registrar pagos
+    // El borrower hace pagos (I'm paying)
+    // El lender registra pagos recibidos (I received payment)
+    const isLender = lenderId === userId;
+    const isBorrower = borrowerId === userId;
+
+    if (!isLender && !isBorrower) {
+      return res.status(403).json({ success: false, message: 'Not authorized to register payments' });
+    }
+
+    // Validar que el monto no exceda lo pendiente
+    const remainingAmount = loan.amount - (loan.paidAmount || 0);
+    if (amount > remainingAmount) {
+      return res.status(400).json({ 
+        success: false, 
+        message: `El monto no puede exceder ${remainingAmount}` 
+      });
+    }
+
+    // Actualizar el préstamo
+    loan.paidAmount = (loan.paidAmount || 0) + amount;
+
+    // Agregar al historial de pagos
+    if (!loan.paymentHistory) loan.paymentHistory = [];
+    loan.paymentHistory.push({
+      type: 'payment',
+      amount: amount,
+      date: new Date(),
+      method: method || 'Transferencia',
+      status: 'completed',
+    });
+
+    // Si se pagó todo, marcar como completado
+    if (loan.paidAmount >= loan.amount) {
+      loan.status = 'marked_paid';
+      loan.paidAmount = loan.amount;
+    }
+
+    await loan.save();
+
+    // Populate antes de retornar
+    const populated = await Loan.findById(loan._id)
+      .populate('lender', 'name email avatar')
+      .populate('borrower', 'name email avatar');
+
+    // Emitir evento de actualización
+    try {
+      const io = getIo();
+      if (io) {
+        if (populated.lender) io.to(`user:${populated.lender._id.toString()}`).emit('loan.updated', populated);
+        if (populated.borrower) io.to(`user:${populated.borrower._id.toString()}`).emit('loan.updated', populated);
+      }
+    } catch (e) { console.error('emit loan.updated (partial payment) error', e); }
+
+    return res.json({ success: true, loan: populated });
+  } catch (error) {
+    console.error('makePartialPayment error', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+

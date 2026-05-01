@@ -1,14 +1,21 @@
 /**
- * Configuración de la conexión a MongoDB Atlas
- * Utiliza variables de entorno para las credenciales de seguridad
+ * Configuración de la conexión a MongoDB
+ * Soporta MongoDB Atlas (producción) y MongoDB Local (desarrollo)
  */
 const mongoose = require('mongoose');
 
 /**
- * Construye la URI de conexión a MongoDB Atlas
- * Reemplaza el placeholder <db_password> con la variable de entorno
+ * Construye la URI de conexión a MongoDB
+ * Prioridad: MONGO_URI > ATLAS > Local default
  */
 const buildMongoUri = () => {
+  // Si existe MONGO_URI explícita (para MongoDB local), usarla
+  if (process.env.MONGO_URI) {
+    console.log('🔧 Usando MONGO_URI explícita:', process.env.MONGO_URI);
+    return process.env.MONGO_URI;
+  }
+
+  // Si no, construir URI de Atlas
   const dbUser = process.env.DB_USER || 'jefreink_db_user';
   const dbPassword = process.env.DB_PASSWORD;
   const dbCluster = process.env.DB_CLUSTER || 'cluster0.c5z3hwc.mongodb.net';
@@ -18,11 +25,13 @@ const buildMongoUri = () => {
     throw new Error('DB_PASSWORD no está definido en las variables de entorno');
   }
 
-  return `mongodb+srv://${dbUser}:${dbPassword}@${dbCluster}/?appName=${dbName}&retryWrites=true&w=majority`;
+  const atlasUri = `mongodb+srv://${dbUser}:${dbPassword}@${dbCluster}/?appName=${dbName}&retryWrites=true&w=majority`;
+  console.log('🔧 Usando MongoDB Atlas');
+  return atlasUri;
 };
 
 /**
- * Establece la conexión con MongoDB Atlas
+ * Establece la conexión con MongoDB
  * @returns {Promise<void>}
  */
 const connectDB = async () => {
@@ -41,13 +50,19 @@ const connectDB = async () => {
       // socketTimeoutMS: 45000,
     });
 
-    console.log(`✅ MongoDB Atlas Conectado: ${conn.connection.host}`);
+    console.log(`✅ MongoDB Conectado: ${conn.connection.host}`);
     console.log(`📊 Base de datos: ${conn.connection.name}`);
     
     return conn;
   } catch (error) {
-    console.error(`❌ Error de conexión a MongoDB Atlas: ${error.message}`);
+    console.error(`❌ Error de conexión a MongoDB: ${error.message}`);
     console.error('Asegúrate de que:');
+    console.error('Para ATLAS:');
+    console.error('  1. DB_PASSWORD esté definido en .env');
+    console.error('  2. Tu IP esté agregada en MongoDB Atlas (Network Access)');
+    console.error('Para LOCAL:');
+    console.error('  1. MongoDB esté corriendo en localhost:27017');
+    console.error('  2. MONGO_URI esté definido en .env.local');
     console.error('1. DB_PASSWORD esté definido en .env');
     console.error('2. Tu IP esté agregada en MongoDB Atlas (Network Access)');
     console.error('3. Las credenciales sean correctas');

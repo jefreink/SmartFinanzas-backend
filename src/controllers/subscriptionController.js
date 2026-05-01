@@ -1,4 +1,5 @@
 const Subscription = require('../models/Subscription');
+const Transaction = require('../models/Transaction');
 
 exports.createSubscription = async (req, res) => {
   try {
@@ -125,8 +126,59 @@ exports.confirmPayment = async (req, res) => {
     if (!subscription) return res.status(404).json({ success: false, message: 'Not found' });
     
     await subscription.confirmPayment(month, year);
-    
-    res.json({ success: true, subscription });
+
+    // Crear transacción automáticamente
+    const amountToPay = subscription.isShared 
+      ? subscription.amount / (subscription.members.length + 1)
+      : subscription.amount;
+
+    const splitParticipants = subscription.isShared 
+      ? subscription.members.map(member => ({
+          name: member.name,
+          subtotal: member.shareAmount || (subscription.amount / (subscription.members.length + 1)),
+          tipAmount: 0,
+          total: member.shareAmount || (subscription.amount / (subscription.members.length + 1)),
+          isMe: false
+        }))
+      : [];
+
+    // Agregar el usuario actual si es compartida
+    if (subscription.isShared) {
+      splitParticipants.push({
+        name: req.user.name || 'Tú',
+        subtotal: amountToPay,
+        tipAmount: 0,
+        total: amountToPay,
+        isMe: true
+      });
+    }
+
+    const transaction = await Transaction.create({
+      user: req.user._id,
+      totalAmount: amountToPay,
+      subtotal: amountToPay,
+      type: 'expense',
+      category: 'subscription',
+      merchant: subscription.serviceName,
+      description: subscription.description,
+      receiptImage: subscription.iconUrl,
+      date: new Date(),
+      paymentMethod: 'subscription',
+      isSplit: subscription.isShared,
+      splitParticipants: splitParticipants,
+      tip: 0,
+      metadata: {
+        subscriptionId: subscription._id,
+        billingMonth: month,
+        billingYear: year,
+        originalOcrData: null
+      }
+    });
+
+    subscription.lastTransactionId = transaction._id;
+    await subscription.save();
+
+    res.json({ success: true, subscription, transaction });
   } catch (error) {
     console.error('confirmPayment error:', error);
     res.status(500).json({ success: false, message: 'Server error' });
@@ -187,6 +239,37 @@ exports.confirmMemberPayment = async (req, res) => {
     if (allPaid) {
       payment.isPaid = true;
       payment.paidDate = new Date();
+    }
+    
+    // Crear transacción para el pago del miembro
+    const member = subscription.members.find(m => m.contactId.toString() === contactId);
+    if (member && memberPayment?.isPaid) {
+      const amountPaid = member.shareAmount || (subscription.amount / (subscription.members.length + 1));
+      
+      const transaction = await Transaction.create({
+        user: req.user._id,
+        totalAmount: amountPaid,
+        subtotal: amountPaid,
+        type: 'expense',
+        category: 'subscription',
+        merchant: subscription.serviceName,
+        description: `${subscription.description} - Pago de ${member.name}`,
+        receiptImage: subscription.iconUrl,
+        date: new Date(),
+        paymentMethod: 'subscription',
+        isSplit: false,
+        splitParticipants: [],
+        tip: 0,
+        metadata: {
+          subscriptionId: subscription._id,
+          billingMonth: month,
+          billingYear: year,
+          memberPaymentFrom: member.name,
+          originalOcrData: null
+        }
+      });
+
+      subscription.lastTransactionId = transaction._id;
     }
     
     await subscription.save();

@@ -50,6 +50,8 @@ const SubscriptionSchema = new mongoose.Schema(
     notify24hBefore: { type: Boolean, default: true },
 
     status: { type: String, enum: ['active', 'paused', 'cancelled'], default: 'active' },
+    
+    lastTransactionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }, // Referencia a la última transacción creada
   },
   { timestamps: true }
 );

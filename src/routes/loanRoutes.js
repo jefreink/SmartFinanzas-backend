@@ -11,6 +11,14 @@ router.post('/', loanController.createLoan);
 // Listar préstamos relevantes (prestados o a pagar)
 router.get('/', loanController.getLoans);
 
+// RUTAS ESPECÍFICAS CON :id (deben venir ANTES de /:id)
+// Acciones: marcar pagado / confirmar
+router.patch('/:id/mark', loanController.markPaid);
+
+// Realizar pago parcial
+router.post('/:id/partial-payment', loanController.makePartialPayment);
+
+// RUTAS GENÉRICAS CON :id (después de las específicas)
 // Detalle
 router.get('/:id', loanController.getLoanById);
 
@@ -20,7 +28,6 @@ router.patch('/:id', loanController.updateLoan);
 // Borrar préstamo
 router.delete('/:id', loanController.deleteLoan);
 
-// Acciones: marcar pagado / confirmar
-router.patch('/:id/mark', loanController.markPaid);
-
 module.exports = router;
+
+

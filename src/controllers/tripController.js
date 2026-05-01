@@ -1,545 +1,405 @@
-/**
- * Trip Controller
- * Controlador para gestionar viajes compartidos
- */
-
-const mongoose = require('mongoose');
 const Trip = require('../models/Trip');
+const Transaction = require('../models/Transaction');
 
-/**
- * Crear un nuevo viaje
- */
+// Create a new trip
 exports.createTrip = async (req, res) => {
   try {
-    console.log('📝 Creando viaje - Body:', req.body);
-    console.log('👤 Usuario:', req.user?._id, req.user?.name);
+    const { name, destination, startDate, endDate, budget, currency, participants, description, coverImage } = req.body;
 
-    const { name, description, destination, startDate, endDate, participants } = req.body;
-    const userId = req.user._id;
-
-    // Validaciones
-    if (!name || !startDate) {
-      return res.status(400).json({
-        success: false,
-        message: 'Nombre y fecha de inicio son requeridos',
-      });
+    if (!name) {
+      return res.status(400).json({ success: false, message: 'Trip name is required' });
     }
 
-    // Filtrar participantes para evitar duplicar al usuario creador
-    const filteredParticipants = (participants || []).filter(
-      (p) => p.email !== req.user.email && p.name !== req.user.name
+    // Asegurar que el creador esté en la lista de participantes
+    const tripParticipants = participants || [];
+    const creatorExists = tripParticipants.some(p =>
+      p.userId === req.user.id || (p.userId && p.userId.toString() === req.user.id.toString())
     );
 
-    const newTrip = new Trip({
-      user: userId,
+    if (!creatorExists) {
+      tripParticipants.unshift({
+        userId: req.user.id,
+        name: req.user.name || 'Yo (Creador)',
+        isMe: true
+      });
+    }
+
+    const trip = await Trip.create({
+      user: req.user.id,
       name,
-      description,
       destination,
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
-      participants: [
-        {
-          userId,
-          name: req.user.name || 'Yo',
-          avatar: req.user.avatar,
-          email: req.user.email,
-        },
-        ...filteredParticipants,
-      ],
+      startDate,
+      endDate,
+      budget,
+      currency: currency || req.user.currency,
       status: 'active',
+      participants: tripParticipants,
+      description,
+      coverImage
     });
 
-    await newTrip.save();
-    console.log('✅ Viaje creado:', newTrip._id);
-
-    res.status(201).json({
-      success: true,
-      message: 'Viaje creado exitosamente',
-      trip: newTrip,
-    });
+    res.status(201).json({ success: true, trip: trip });
   } catch (error) {
-    console.error('❌ Error creando viaje:', error.message);
-    console.error('Stack:', error.stack);
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Error al crear viaje',
-      error: error.message,
-    });
+    console.error('Create trip error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 };
 
-/**
- * Eliminar un viaje
- */
-exports.deleteTrip = async (req, res) => {
-  try {
-    const { tripId } = req.params;
-    const userId = req.user._id;
-
-    console.log('🗑️ Eliminando viaje:', tripId, '- Usuario:', userId);
-
-    const trip = await Trip.findById(tripId);
-
-    if (!trip) {
-      return res.status(404).json({
-        success: false,
-        message: 'Viaje no encontrado',
-      });
-    }
-
-    // Validar que el usuario sea el propietario del viaje
-    if (trip.user.toString() !== userId.toString()) {
-      return res.status(403).json({
-        success: false,
-        message: 'No tienes permiso para eliminar este viaje',
-      });
-    }
-
-    await Trip.findByIdAndDelete(tripId);
-    console.log('✅ Viaje eliminado:', tripId);
-
-    res.status(200).json({
-      success: true,
-      message: 'Viaje eliminado exitosamente',
-    });
-  } catch (error) {
-    console.error('❌ Error eliminando viaje:', error.message);
-    res.status(500).json({
-      success: false,
-      message: 'Error al eliminar viaje',
-      error: error.message,
-    });
-  }
-};
-
-/**
- * Obtener todos los viajes del usuario
- */
+// Get all trips for the user
 exports.getTrips = async (req, res) => {
   try {
-    console.log('🎯 GET /trips - User:', req.user?._id);
-    const userId = req.user._id;
+    const trips = await Trip.find({ user: req.user.id })
+      .sort({ startDate: -1 }) // Newest first
+      .populate('participants.contactId', 'fullName avatar')
+      .lean();
 
-    const trips = await Trip.find({ user: userId })
-      .populate('participants.userId')
-      .sort({ startDate: -1 });
+    // Calculate totals and expense counts for each trip
+    for (const trip of trips) {
+      const expenses = await Transaction.find({ trip: trip._id, type: 'expense' });
+      trip.totalAmount = expenses.reduce((sum, e) => sum + e.totalAmount, 0);
+      trip.expenses = expenses; // Optional: sending all expenses might be heavy for list view, but frontend uses length
+    }
 
-    res.status(200).json({
-      success: true,
-      trips,
-      total: trips.length,
-    });
+    res.json({ success: true, trips: trips }); // Frontend expects { trips: [...] }
   } catch (error) {
-    console.error('Error obteniendo viajes:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error al obtener viajes',
-      error: error.message,
-    });
+    console.error('Get trips error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 };
 
-/**
- * Obtener detalles de un viaje
- */
+// Get a single trip by ID
 exports.getTripById = async (req, res) => {
   try {
-    const { tripId } = req.params;
-    const userId = req.user._id;
-
-    const trip = await Trip.findOne({ _id: tripId, user: userId })
-      .populate('participants.userId')
-      .populate('expenses.paidBy.userId')
-      .populate('expenses.splitBetween.userId');
+    const trip = await Trip.findOne({ _id: req.params.id, user: req.user.id })
+      .populate('participants.contactId', 'fullName avatar relation')
+      .populate('participants.userId', 'name email avatar')
+      .lean();
 
     if (!trip) {
-      return res.status(404).json({
-        success: false,
-        message: 'Viaje no encontrado',
-      });
+      return res.status(404).json({ success: false, message: 'Trip not found' });
     }
 
-    res.status(200).json({
-      success: true,
-      trip,
-      balances: trip.balances,
-    });
+    // Get expenses
+    const expenses = await Transaction.find({ trip: trip._id, type: 'expense' })
+      .sort({ date: -1 })
+      .populate('user', 'name') // Who created it
+      .lean();
+
+    console.log('📋 getTripById - Trip ID:', trip._id);
+    console.log('📋 getTripById - Found expenses:', expenses.length);
+    if (expenses.length > 0) {
+      console.log('📋 First expense payer:', expenses[0].payer?.name);
+      console.log('📋 First expense amount:', expenses[0].totalAmount);
+      console.log('📋 First expense splitParticipants:', expenses[0].splitParticipants?.length);
+    }
+
+    // Map expenses to match frontend expectation (paidBy, splitBetween)
+    // The transaction model naturally supports this via `splitParticipants` and `user`.
+    // We might need to adjust formatting if frontend expects different structure.
+    // Frontend expects: paidBy: { userId, name }, splitBetween: [...]
+
+    trip.expenses = expenses.map(exp => ({
+      _id: exp._id,
+      description: exp.merchant || exp.description || '',
+      amount: exp.totalAmount,
+      currency: exp.currency,
+      category: exp.category,
+      date: exp.date,
+      paidBy: { userId: exp.user._id, name: exp.user.name || 'Usuario' },
+      splitBetween: exp.splitParticipants || [],
+      isSplit: exp.isSplit,
+      tip: exp.tip,
+      items: exp.items || [],
+      receiptImage: exp.receiptImage,
+      metadata: exp.metadata
+    }));
+
+    trip.totalAmount = expenses.reduce((sum, e) => sum + e.totalAmount, 0);
+
+    res.json({ success: true, trip: trip });
   } catch (error) {
-    console.error('Error obteniendo viaje:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error al obtener viaje',
-      error: error.message,
-    });
+    console.error('Get trip error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 };
 
-/**
- * Agregar gasto a un viaje
- */
-exports.addExpense = async (req, res) => {
-  try {
-    const { tripId } = req.params;
-    const userId = req.user._id;
-    console.log('➕ Agregando gasto - Trip:', tripId, '- Usuario:', userId, '- Body:', req.body);
-    const { description, amount, paidBy, splitBetween, category, date, currency } = req.body;
-
-    const trip = await Trip.findOne({ _id: tripId, user: userId });
-
-    if (!trip) {
-      return res.status(404).json({
-        success: false,
-        message: 'Viaje no encontrado',
-      });
-    }
-
-    // Validar que paidBy es participante
-    const paidByParticipant = trip.participants.find(
-      (p) => p.userId?.toString() === paidBy.userId || p.name === paidBy.name
-    );
-
-    if (!paidByParticipant) {
-      return res.status(400).json({
-        success: false,
-        message: 'Pagador no es participante del viaje',
-      });
-    }
-
-    // Validar que splitBetween son participantes
-    const validSplit = splitBetween.every((s) =>
-      trip.participants.some(
-        (p) => p.userId?.toString() === s.userId || p.name === s.name
-      )
-    );
-
-    if (!validSplit) {
-      return res.status(400).json({
-        success: false,
-        message: 'Algunos participantes en la división no existen',
-      });
-    }
-
-    // Calcular total de splitBetween
-    const splitTotal = splitBetween.reduce((sum, s) => sum + (s.amount || 0), 0);
-
-    if (Math.abs(splitTotal - amount) > 0.01) {
-      return res.status(400).json({
-        success: false,
-        message: 'La suma de división no coincide con el monto total',
-      });
-    }
-
-    const newExpense = {
-      _id: new mongoose.Types.ObjectId(),
-      description,
-      amount,
-      paidBy,
-      splitBetween,
-      category: category || 'other',
-      date: date || new Date(),
-      currency: currency || 'USD',
-    };
-
-    trip.expenses.push(newExpense);
-    trip.totalAmount = trip.expenses.reduce((sum, e) => sum + e.amount, 0);
-
-    await trip.save();
-
-    res.status(201).json({
-      success: true,
-      message: 'Gasto agregado exitosamente',
-      trip,
-    });
-  } catch (error) {
-    console.error('Error agregando gasto:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error al agregar gasto',
-      error: error.message,
-    });
-  }
-};
-
-/**
- * Eliminar gasto de un viaje
- */
-exports.removeExpense = async (req, res) => {
-  try {
-    const { tripId, expenseId } = req.params;
-    const userId = req.user._id;
-
-    const trip = await Trip.findOne({ _id: tripId, user: userId });
-
-    if (!trip) {
-      return res.status(404).json({
-        success: false,
-        message: 'Viaje no encontrado',
-      });
-    }
-
-    trip.expenses = trip.expenses.filter((e) => e._id.toString() !== expenseId);
-    trip.totalAmount = trip.expenses.reduce((sum, e) => sum + e.amount, 0);
-
-    await trip.save();
-
-    res.status(200).json({
-      success: true,
-      message: 'Gasto eliminado exitosamente',
-      trip,
-    });
-  } catch (error) {
-    console.error('Error eliminando gasto:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error al eliminar gasto',
-      error: error.message,
-    });
-  }
-};
-
-/**
- * Agregar participante al viaje
- */
-exports.addParticipant = async (req, res) => {
-  try {
-    const { tripId } = req.params;
-    const userId = req.user._id;
-    const { name, email, avatar } = req.body;
-
-    const trip = await Trip.findOne({ _id: tripId, user: userId });
-
-    if (!trip) {
-      return res.status(404).json({
-        success: false,
-        message: 'Viaje no encontrado',
-      });
-    }
-
-    // Evitar duplicados
-    const exists = trip.participants.some((p) => p.email === email || p.name === name);
-    if (exists) {
-      return res.status(400).json({
-        success: false,
-        message: 'Participante ya existe en el viaje',
-      });
-    }
-
-    trip.participants.push({
-      name,
-      email,
-      avatar,
-    });
-
-    await trip.save();
-
-    res.status(200).json({
-      success: true,
-      message: 'Participante agregado exitosamente',
-      trip,
-    });
-  } catch (error) {
-    console.error('Error agregando participante:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error al agregar participante',
-      error: error.message,
-    });
-  }
-};
-
-/**
- * Eliminar participante del viaje
- */
-exports.removeParticipant = async (req, res) => {
-  try {
-    const { tripId, participantId } = req.params;
-    const userId = req.user._id;
-
-    const trip = await Trip.findOne({ _id: tripId, user: userId });
-
-    if (!trip) {
-      return res.status(404).json({
-        success: false,
-        message: 'Viaje no encontrado',
-      });
-    }
-
-    trip.participants = trip.participants.filter(
-      (p) => p.userId?.toString() !== participantId && p.name !== participantId
-    );
-
-    await trip.save();
-
-    res.status(200).json({
-      success: true,
-      message: 'Participante eliminado exitosamente',
-      trip,
-    });
-  } catch (error) {
-    console.error('Error eliminando participante:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error al eliminar participante',
-      error: error.message,
-    });
-  }
-};
-
-/**
- * Calcular quién le debe a quién
- */
-exports.calculateSettlement = async (req, res) => {
-  try {
-    const { tripId } = req.params;
-    const userId = req.user._id;
-
-    const trip = await Trip.findOne({ _id: tripId, user: userId });
-
-    if (!trip) {
-      return res.status(404).json({
-        success: false,
-        message: 'Viaje no encontrado',
-      });
-    }
-
-    const balances = trip.balances;
-    const settlements = [];
-
-    // Algoritmo greedy para minimizar transacciones
-    const debtors = [];
-    const creditors = [];
-
-    Object.entries(balances).forEach(([participantId, balance]) => {
-      if (balance < -0.01) {
-        debtors.push({ id: participantId, amount: Math.abs(balance) });
-      } else if (balance > 0.01) {
-        creditors.push({ id: participantId, amount: balance });
-      }
-    });
-
-    // Emparejar deudores y acreedores
-    while (debtors.length > 0 && creditors.length > 0) {
-      const debtor = debtors[0];
-      const creditor = creditors[0];
-
-      const amount = Math.min(debtor.amount, creditor.amount);
-
-      settlements.push({
-        from: debtor.id,
-        to: creditor.id,
-        amount: parseFloat(amount.toFixed(2)),
-      });
-
-      debtor.amount -= amount;
-      creditor.amount -= amount;
-
-      if (debtor.amount < 0.01) debtors.shift();
-      if (creditor.amount < 0.01) creditors.shift();
-    }
-
-    res.status(200).json({
-      success: true,
-      trip,
-      balances,
-      settlements,
-    });
-  } catch (error) {
-    console.error('Error calculando liquidación:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error al calcular liquidación',
-      error: error.message,
-    });
-  }
-};
-
-/**
- * Actualizar viaje (nombre, fechas, participantes, coverImage)
- */
+// Update a trip
 exports.updateTrip = async (req, res) => {
   try {
-    const { tripId } = req.params;
-    const userId = req.user._id;
-    const updates = req.body;
-
-    // Campos permitidos para actualizar
-    const allowedUpdates = ['name', 'startDate', 'endDate', 'participants', 'coverImage', 'status'];
-    const actualUpdates = {};
-
-    for (const key of allowedUpdates) {
-      if (updates[key] !== undefined) {
-        actualUpdates[key] = updates[key];
-      }
-    }
+    const { name, destination, startDate, endDate, budget, status, participants, description, coverImage } = req.body;
 
     const trip = await Trip.findOneAndUpdate(
-      { _id: tripId, user: userId },
-      actualUpdates,
-      { new: true }
+      { _id: req.params.id, user: req.user.id },
+      {
+        name,
+        destination,
+        startDate,
+        endDate,
+        budget,
+        status,
+        participants,
+        description,
+        coverImage
+      },
+      { new: true, runValidators: true }
     );
 
     if (!trip) {
-      return res.status(404).json({
-        success: false,
-        message: 'Viaje no encontrado',
-      });
+      return res.status(404).json({ success: false, message: 'Trip not found' });
     }
 
-    res.status(200).json({
-      success: true,
-      message: 'Viaje actualizado',
-      trip,
-    });
+    res.json({ success: true, data: trip });
   } catch (error) {
-    console.error('Error actualizando viaje:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error al actualizar viaje',
-      error: error.message,
-    });
+    console.error('Update trip error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 };
 
-/**
- * Actualizar estado del viaje
- */
-exports.updateTripStatus = async (req, res) => {
+// Delete a trip
+exports.deleteTrip = async (req, res) => {
   try {
-    const { tripId } = req.params;
-    const { status } = req.body;
-    const userId = req.user._id;
+    const tripId = req.params.id;
+    const trip = await Trip.findOneAndDelete({ _id: tripId, user: req.user.id });
 
-    if (!['active', 'completed', 'cancelled'].includes(status)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Estado inválido',
-      });
+    if (!trip) {
+      return res.status(404).json({ success: false, message: 'Trip not found' });
     }
 
-    const trip = await Trip.findOneAndUpdate(
-      { _id: tripId, user: userId },
-      { status },
+    // Cascada: Eliminar todas las transacciones asociadas a este viaje
+    const deletedTx = await Transaction.deleteMany({ trip: tripId });
+    console.log(`[Trip Cascade] Eliminadas ${deletedTx.deletedCount} transacciones asociadas al viaje ${tripId}`);
+
+    res.json({ success: true, message: 'Trip and associated expenses deleted' });
+  } catch (error) {
+    console.error('Delete trip error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+// Add an expense to a trip
+exports.addExpense = async (req, res) => {
+  try {
+    const { description, amount, currency, category, paidBy, splitBetween } = req.body;
+    const tripId = req.params.id;
+
+    await Transaction.create({
+      user: req.user.id, // Creator
+      trip: tripId,
+      totalAmount: amount,
+      subtotal: amount,
+      type: 'expense',
+      category: category || 'other',
+      merchant: description,
+      currency: currency || 'CLP',
+      date: new Date(),
+      payer: {
+        userId: paidBy.userId,
+        contactId: paidBy.contactId,
+        name: paidBy.name
+      },
+      isSplit: true,
+      splitParticipants: splitBetween.map(p => ({
+        name: p.name,
+        subtotal: p.amount,
+        tipAmount: 0,
+        total: p.amount,
+        isMe: p.userId === req.user.id
+      }))
+    });
+
+    return exports.getSettlement(req, res);
+
+  } catch (error) {
+    console.error('Add expense error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+// Update an expense
+exports.updateExpense = async (req, res) => {
+  try {
+    const { description, amount, category, paidBy, splitBetween } = req.body;
+    const { id, expenseId } = req.params;
+
+    const transaction = await Transaction.findOneAndUpdate(
+      { _id: expenseId, trip: id },
+      {
+        totalAmount: amount,
+        subtotal: amount,
+        category,
+        merchant: description,
+        payer: {
+          userId: paidBy.userId,
+          name: paidBy.name
+        },
+        splitParticipants: splitBetween.map(p => ({
+          name: p.name,
+          subtotal: p.amount,
+          tipAmount: 0,
+          total: p.amount,
+          isMe: p.userId === req.user.id
+        }))
+      },
       { new: true }
     );
 
-    if (!trip) {
-      return res.status(404).json({
-        success: false,
-        message: 'Viaje no encontrado',
-      });
+    if (!transaction) {
+      return res.status(404).json({ success: false, message: 'Expense not found' });
     }
 
-    res.status(200).json({
-      success: true,
-      message: 'Estado actualizado',
-      trip,
-    });
+    return exports.getSettlement(req, res);
+
   } catch (error) {
-    console.error('Error actualizando viaje:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error al actualizar viaje',
-      error: error.message,
+    console.error('Update expense error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+// Delete an expense
+exports.deleteExpense = async (req, res) => {
+  try {
+    const { id, expenseId } = req.params;
+    await Transaction.findOneAndDelete({ _id: expenseId, trip: id });
+    return exports.getSettlement(req, res);
+  } catch (error) {
+    console.error('Delete expense error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+// Get settlement
+exports.getSettlement = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Get trip
+    const trip = await Trip.findById(id)
+      .populate('user', 'name email')
+      .populate('participants.contactId', 'fullName avatar relation')
+      .populate('participants.userId', 'name email avatar')
+      .lean();
+
+    if (!trip) {
+      return res.status(404).json({ success: false, message: 'Trip not found' });
+    }
+
+    // Get expenses
+    const expenses = await Transaction.find({ trip: trip._id, type: 'expense' })
+      .sort({ date: -1 })
+      .populate('user', 'name')
+      .lean();
+
+    // Map expenses
+    trip.expenses = expenses.map(exp => ({
+      _id: exp._id,
+      description: exp.merchant || exp.description || '',
+      amount: exp.totalAmount,
+      currency: exp.currency,
+      category: exp.category,
+      date: exp.date,
+      paidBy: { userId: exp.user._id, name: exp.user.name || 'Usuario' },
+      splitBetween: exp.splitParticipants || [],
+      isSplit: exp.isSplit,
+      tip: exp.tip,
+      items: exp.items || [],
+      receiptImage: exp.receiptImage,
+      metadata: exp.metadata
+    }));
+
+    trip.totalAmount = expenses.reduce((sum, e) => sum + e.totalAmount, 0);
+
+    // Calculate balances
+    // Approach: For each expense, the payer advances money
+    // Each person in splitParticipants owes their share
+    const balances = {}; // name -> amount (positive = owed money, negative = owes money)
+
+    console.log('🔍 Settlement Debug - Total expenses:', expenses.length);
+
+    expenses.forEach((exp, idx) => {
+      const payerName = (exp.payer?.name || 'Unknown').trim();
+      const totalAmount = exp.totalAmount;
+
+      console.log(`\n📝 Expense ${idx + 1}:`);
+      console.log('  Payer:', payerName);
+      console.log('  Total Amount:', totalAmount);
+      console.log('  Split Participants:', exp.splitParticipants?.length || 0);
+
+      // Initialize payer in balances if not exists
+      if (!balances[payerName]) {
+        balances[payerName] = 0;
+      }
+
+      if (exp.splitParticipants && exp.splitParticipants.length > 0) {
+        // Distribute the cost among all split participants
+        exp.splitParticipants.forEach(p => {
+          const participantName = (p.name || 'Unknown').trim();
+          const share = p.total || 0;
+
+          console.log(`    - ${participantName}: ${share}`);
+
+          // Initialize participant in balances if not exists
+          if (!balances[participantName]) {
+            balances[participantName] = 0;
+          }
+
+          // Participant owes their share (negative balance)
+          balances[participantName] -= share;
+
+          // Payer gets credit for the amount paid (but will be reduced by their own share if they're in the list)
+          balances[payerName] += share;
+        });
+      } else {
+        // If no split participants, payer pays the full amount
+        balances[payerName] += totalAmount;
+      }
     });
+
+    console.log('\n💰 Final Balances:', balances);
+
+    // Calculate settlements (who owes who)
+    const settlements = [];
+    const participants = Object.keys(balances);
+
+    // Create a copy of balances for settlement calculation to avoid zeroing out the original balances
+    const tempBalances = { ...balances };
+
+    console.log('🔢 Participants for settlement:', participants);
+    console.log('🔢 Balances values:', Object.values(balances));
+
+    for (let i = 0; i < participants.length; i++) {
+      for (let j = i + 1; j < participants.length; j++) {
+        const p1 = participants[i];
+        const p2 = participants[j];
+        const balance1 = tempBalances[p1];
+        const balance2 = tempBalances[p2];
+
+        // If one is creditor and other is debtor, create settlement
+        if (balance1 > 0.01 && balance2 < -0.01) {
+          const amount = Math.min(balance1, Math.abs(balance2));
+          settlements.push({
+            from: p2,
+            to: p1,
+            amount: parseFloat(amount.toFixed(2))
+          });
+          tempBalances[p1] -= amount;
+          tempBalances[p2] += amount;
+        } else if (balance1 < -0.01 && balance2 > 0.01) {
+          const amount = Math.min(Math.abs(balance1), balance2);
+          settlements.push({
+            from: p1,
+            to: p2,
+            amount: parseFloat(amount.toFixed(2))
+          });
+          tempBalances[p1] += amount;
+          tempBalances[p2] -= amount;
+        }
+      }
+    }
+
+    res.json({ success: true, trip, balances, settlements });
+
+  } catch (error) {
+    console.error('Settlement error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 };

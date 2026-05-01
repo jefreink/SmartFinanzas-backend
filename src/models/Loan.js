@@ -6,11 +6,25 @@ const LoanSchema = new mongoose.Schema({
   currency: { type: String, default: 'CLP' },
   lender: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false }, // Puede ser null si hay lenderName
   borrower: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false }, // Puede ser null si hay borrowerName
+  contact: { type: mongoose.Schema.Types.ObjectId, ref: 'Contact', required: false }, // Referencia a Contacto si no es Usuario
   borrowerName: { type: String },
   lenderName: { type: String },
-  dueDate: { type: Date },
+  dueDate: { type: Date }, // Opcional - puede no haber vencimiento (ej: deudas por compras divididas)
   notes: { type: String },
   description: { type: String }, // alias para compatibilidad
+  // Tipo de deuda: 'loan' (préstamo tradicional) o 'split-bill' (de una compra dividida)
+  debtType: {
+    type: String,
+    enum: ['loan', 'split-bill'],
+    default: 'loan',
+    description: 'Tipo de deuda: préstamo o compra dividida'
+  },
+  // Referencia a la transacción dividida (si debtType es 'split-bill')
+  sourceTransaction: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Transaction',
+    description: 'Transacción original si es una deuda de compra dividida'
+  },
   // status: 'pending' -> active, 'marked_paid' -> borrower marked paid, 'paid' -> confirmed by lender
   status: { type: String, enum: ['pending', 'marked_paid', 'paid'], default: 'pending' },
   paidAmount: { type: Number, default: 0 },
@@ -27,7 +41,7 @@ const LoanSchema = new mongoose.Schema({
 
 // Validador personalizado: al menos uno de lender o lenderName debe existir
 // Nota: usamos estilo "promise/sync" (sin next) para compatibilidad con Mongoose
-LoanSchema.pre('save', function() {
+LoanSchema.pre('save', function () {
   // Inicializar paymentHistory si no existe
   if (this.isNew && (!this.paymentHistory || this.paymentHistory.length === 0)) {
     this.paymentHistory = [{

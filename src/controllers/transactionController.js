@@ -3,9 +3,9 @@
  * Maneja lógica de gastos, ingresos, 'Impuesto al Vicio' y 'Dinero Libre'.
  */
 const Transaction = require('../models/Transaction');
-const Goal = require('../models/Goal');
-const Inventory = require('../models/Inventory');
 const mongoose = require('mongoose');
+const { executeTransaction } = require('../utils/dbUtils');
+const TransactionIntegrationService = require('../services/transactionIntegrationService');
 
 /**
  * Categorías consideradas "Vicio" (Base Global Simplificada)
@@ -20,77 +20,73 @@ const FOOD_CATEGORIES = ['Comida', 'Supermercado', 'Despensa', 'Groceries', 'Ali
  * @access  Private
  */
 exports.createTransaction = async (req, res) => {
-  try {
-    const { totalAmount, type, category, merchant, date, items, mood, paymentMethod, installments } = req.body;
+    try {
+        const { totalAmount, type, category, merchant, date, items, mood, paymentMethod, installments, isSplit, splitType, tip, splitParticipants } = req.body;
 
-    let transactionData = {
-      user: req.user.id,
-      totalAmount,
-      type,
-      category,
-      merchant,
-      date: date || Date.now(),
-      items: items || [],
-      mood, // Happy, stressed, neutral
-      paymentMethod,
-      installments: (paymentMethod === 'credit' && installments > 1) 
-          ? { current: 1, total: Number(installments) } 
-          : { current: 1, total: 1 },
-      isVice: false,
-      viceTaxAmount: 0,
-    };
+        // DEBUG: Log incoming data
+        console.log('📥 Creating transaction with data:', {
+            totalAmount, type, category, merchant, paymentMethod, items: items?.length || 0
+        });
 
-    // Lógica 1: Impuesto al Vicio (Vice Tax)
-    // Si la categoría es vicio, calculamos el 10% y actualizamos una Meta.
-    if (type === 'expense' && VICE_CATEGORIES.includes(category)) {
-      transactionData.isVice = true;
-      const taxRate = 0.10; // 10% hardcoded por ahora, luego vendrá de User.financialProfile
-      const tax = totalAmount * taxRate;
-      transactionData.viceTaxAmount = tax;
+        const result = await executeTransaction(async (session) => {
+            // Calcular subtotal (totalAmount - tip, ya que totalAmount incluye la propina en el frontend)
+            const tipAmount = tip || 0;
+            const subtotal = totalAmount - tipAmount;
 
-      // Buscar meta "Vice Fund" o crear ahorro en una meta activa
-      let viceGoal = await Goal.findOne({ user: req.user.id, $or: [{ isViceFund: true }, { status: 'active' }] }).sort({ isViceFund: -1 }); // Prioriza la marcada como ViceFund
-      
-      if (viceGoal) {
-        viceGoal.currentAmount += tax;
-        await viceGoal.save();
-        console.log(`[ViceTax] Se añadieron $${tax} a la meta: ${viceGoal.name}`);
-      }
+            let transactionData = {
+                user: req.user.id,
+                totalAmount: subtotal, // Guardar solo el subtotal en totalAmount para compatibilidad
+                type,
+                category,
+                merchant,
+                date: date || Date.now(),
+                items: items || [],
+                mood, // Happy, stressed, neutral
+                paymentMethod,
+                installments: (paymentMethod === 'credit' && installments > 1)
+                    ? { current: 1, total: Number(installments) }
+                    : { current: 1, total: 1 },
+                isVice: false,
+                viceTaxAmount: 0,
+                // Datos de división
+                isSplit: isSplit || false,
+                splitType: isSplit ? splitType : null,
+                tip: tipAmount,
+                subtotal: subtotal,
+                splitParticipants: isSplit && splitParticipants ? splitParticipants : []
+            };
+
+            // Lógica 1: Impuesto al Vicio (Vice Tax)
+            await TransactionIntegrationService.applyViceTax(transactionData, subtotal, req.user, session);
+
+            // Guardar transacción
+            const transaction = new Transaction(transactionData);
+            await transaction.save(session ? { session } : undefined);
+
+            // Lógica 2: Crear deudas automáticas si la transacción está dividida
+            const debtsCreated = await TransactionIntegrationService.createSplitLoans(transaction, splitParticipants, items, tipAmount, session);
+
+            // Lógica 3: Auto-Inventario (Sincronización Despensa)
+            const createdInventoryItems = await TransactionIntegrationService.autoSyncInventory(transaction, items, session);
+
+            return { transaction, createdInventoryItems, debtsCreated };
+        });
+
+        // Gamification: Award points (fire and forget)
+        TransactionIntegrationService.triggerGamification(req.user.id);
+
+        res.status(201).json({
+            success: true,
+            data: result.transaction,
+            createdInventoryItems: result.createdInventoryItems,
+            viceTaxApplied: result.transaction.viceTaxAmount > 0 ? result.transaction.viceTaxAmount : 0,
+            debtsCreated: result.debtsCreated
+        });
+
+    } catch (err) {
+        console.error('❌ Error creating transaction:', err);
+        res.status(500).json({ success: false, error: err.message });
     }
-
-    // Guardar transacción
-    const transaction = await Transaction.create(transactionData);
-
-    // Lógica 2: Auto-Inventario (Sincronización Despensa)
-    // Si es Supermercado y hay items, los movemos a Inventory
-    if (type === 'expense' && FOOD_CATEGORIES.includes(category) && items && items.length > 0) {
-       const inventoryItems = items.map(item => ({
-           user: req.user.id,
-           name: item.name,
-           quantity: item.quantity || 1,
-           price: item.price,
-           category: 'perishable', // Asumimos perecedero por defecto para comida
-           purchaseDate: transaction.date,
-           sourceTransaction: transaction._id,
-           estimatedLifeDays: 7 // Default provisional
-       }));
-       
-       if(inventoryItems.length > 0) {
-           await Inventory.insertMany(inventoryItems);
-           console.log(`[AutoInventory] ${inventoryItems.length} ítems movidos a la despensa.`);
-       }
-    }
-
-    res.status(201).json({
-      success: true,
-      data: transaction,
-      viceTaxApplied: transaction.viceTaxAmount > 0 ? transactionData.viceTaxAmount : 0
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, error: err.message });
-  }
 };
 
 /**
@@ -99,39 +95,69 @@ exports.createTransaction = async (req, res) => {
  * @access  Private
  */
 exports.getTransactions = async (req, res) => {
-  try {
-    // Usamos aggregate para hacer join con Merchants y obtener el logo
-    const transactions = await Transaction.aggregate([
-        { $match: { user: new mongoose.Types.ObjectId(req.user.id) } },
-        { $sort: { date: -1 } },
-        {
-          $lookup: {
-            from: 'merchants',         // Nombre de la colección en MongoDB (plural, lowercase)
-            localField: 'merchant',    // Campo en Transaction (nombre string)
-            foreignField: 'name',      // Campo en Merchant (nombre string)
-            as: 'merchantInfo'
-          }
-        },
-        {
-          $unwind: { path: '$merchantInfo', preserveNullAndEmptyArrays: true }
-        },
-        {
-          $addFields: {
-             merchantLogo: '$merchantInfo.logoUrl'
-          }
-        },
-        {
-          $project: {
-             merchantInfo: 0 // Limpiar output
-          }
+    try {
+        // Usamos aggregate para hacer join con Merchants y obtener el logo
+        const transactions = await Transaction.aggregate([
+            { $match: { user: new mongoose.Types.ObjectId(req.user.id) } },
+            { $sort: { date: -1 } },
+            {
+                $lookup: {
+                    from: 'merchants',         // Nombre de la colección en MongoDB (plural, lowercase)
+                    localField: 'merchant',    // Campo en Transaction (nombre string)
+                    foreignField: 'name',      // Campo en Merchant (nombre string)
+                    as: 'merchantInfo'
+                }
+            },
+            {
+                $unwind: { path: '$merchantInfo', preserveNullAndEmptyArrays: true }
+            },
+            {
+                $addFields: {
+                    merchantLogo: '$merchantInfo.logoUrl'
+                }
+            },
+            {
+                $project: {
+                    merchantInfo: 0 // Limpiar output
+                }
+            }
+        ]);
+
+        res.status(200).json({ success: true, count: transactions.length, data: transactions });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, error: err.message });
+    }
+};
+
+/**
+ * @desc    Obtener detalle de una transacción específica (para mostrar detalles de división)
+ * @route   GET /api/transactions/:id
+ * @access  Private
+ */
+exports.getTransactionDetail = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Validar que sea un ID válido de MongoDB
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ success: false, error: 'ID de transacción inválido' });
         }
-    ]);
-    
-    res.status(200).json({ success: true, count: transactions.length, data: transactions });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, error: err.message });
-  }
+
+        const transaction = await Transaction.findOne({
+            _id: id,
+            user: req.user.id
+        });
+
+        if (!transaction) {
+            return res.status(404).json({ success: false, error: 'Transacción no encontrada' });
+        }
+
+        res.status(200).json({ success: true, data: transaction });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, error: err.message });
+    }
 };
 
 /**
@@ -147,32 +173,34 @@ exports.getMonthlyStats = async (req, res) => {
         const currentYear = today.getFullYear();
         const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
         const nextMonthStart = new Date(currentYear, currentMonth + 1, 1);
-        
+
         // 1. Ingresos y Gastos Directos (Cash/Debit/Transfer) del mes actual
         // Los gastos con crédito NO se suman aquí por el total, sino por cuotas abajo
         const cashStats = await Transaction.aggregate([
-            { 
-                $match: { 
+            {
+                $match: {
                     user: new mongoose.Types.ObjectId(req.user.id),
                     date: { $gte: firstDayOfMonth, $lt: nextMonthStart }
-                } 
+                }
             },
             {
                 $group: {
                     _id: null,
-                    income: { 
-                        $sum: { $cond: [{ $eq: ["$type", "income"] }, "$totalAmount", 0] } 
+                    income: {
+                        $sum: { $cond: [{ $eq: ["$type", "income"] }, "$totalAmount", 0] }
                     },
                     directExpenses: {
-                        $sum: { 
+                        $sum: {
                             $cond: [
-                                { $and: [
-                                    { $eq: ["$type", "expense"] }, 
-                                    { $ne: ["$paymentMethod", "credit"] } 
-                                ]}, 
-                                "$totalAmount", 
+                                {
+                                    $and: [
+                                        { $eq: ["$type", "expense"] },
+                                        { $ne: ["$paymentMethod", "credit"] }
+                                    ]
+                                },
+                                "$totalAmount",
                                 0
-                            ] 
+                            ]
                         }
                     }
                 }
@@ -188,16 +216,16 @@ exports.getMonthlyStats = async (req, res) => {
             user: req.user.id,
             type: 'expense',
             paymentMethod: 'credit',
-            date: { $gte: new Date(currentYear - 4, currentMonth, 1) } 
+            date: { $gte: new Date(currentYear - 4, currentMonth, 1) }
         });
 
         let creditExpenses = 0;
-        const activeInstallments = []; 
+        const activeInstallments = [];
 
         creditTransactions.forEach(tx => {
             const txDate = new Date(tx.date);
             const totalInstallments = tx.installments?.total || 1;
-            
+
             // Cálculos de índices temporales (Mes absoluto)
             const startMonthIndex = txDate.getFullYear() * 12 + txDate.getMonth();
             const currentMonthIndex = currentYear * 12 + currentMonth;
@@ -207,9 +235,9 @@ exports.getMonthlyStats = async (req, res) => {
             if (currentMonthIndex >= startMonthIndex && currentMonthIndex < endMonthIndex) {
                 const monthlyShare = tx.totalAmount / totalInstallments;
                 creditExpenses += monthlyShare;
-                
+
                 const currentQuotaNum = (currentMonthIndex - startMonthIndex) + 1;
-                
+
                 activeInstallments.push({
                     _id: tx._id,
                     description: tx.merchant || tx.category,
@@ -229,7 +257,7 @@ exports.getMonthlyStats = async (req, res) => {
                 freeMoney,
                 income,
                 expenses: totalExpenses,
-                activeInstallments, 
+                activeInstallments,
                 savingsTarget: 0
             }
         });
@@ -257,14 +285,14 @@ exports.getProjections = async (req, res) => {
             user: req.user.id,
             type: 'expense',
             paymentMethod: 'credit',
-            date: { $gte: new Date(currentYear - 4, currentMonth, 1) } 
+            date: { $gte: new Date(currentYear - 4, currentMonth, 1) }
         });
 
         for (let i = 1; i <= futureMonths; i++) {
             const targetDate = new Date(currentYear, currentMonth + i, 1);
             const targetMonthIndex = targetDate.getFullYear() * 12 + targetDate.getMonth();
             const monthName = targetDate.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
-            
+
             let monthlyTotal = 0;
             let count = 0;
 
@@ -283,8 +311,8 @@ exports.getProjections = async (req, res) => {
             });
 
             if (monthlyTotal > 0) {
-                 console.log(`📅 ${monthName}: ${monthlyTotal} (${count} pagos)`);
-                 summary.push({
+                console.log(`📅 ${monthName}: ${monthlyTotal} (${count} pagos)`);
+                summary.push({
                     month: monthName,
                     amount: monthlyTotal,
                     commitmentsCount: count
@@ -391,10 +419,11 @@ exports.updateTransaction = async (req, res) => {
 
         // Si se actualizan items, recalcular isVice
         if (updates.category) {
-            const isVice = VICE_CATEGORIES.includes(updates.category);
+            const userViceCategories = req.user.financialProfile?.viceCategories || VICE_CATEGORIES;
+            const isVice = userViceCategories.includes(updates.category);
             updates.isVice = isVice;
             if (isVice && transaction.type === 'expense') {
-                const taxRate = 0.10;
+                const taxRate = req.user.financialProfile?.viceTaxRate || 0.10;
                 updates.viceTaxAmount = transaction.totalAmount * taxRate;
             } else {
                 updates.viceTaxAmount = 0;
