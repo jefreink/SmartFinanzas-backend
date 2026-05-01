@@ -10,14 +10,21 @@ const connectDB = require('./config/db');
 const seedCurrencies = require('./seeds/currencySeed');
 const seedUsers = require('./seeds/userSeed');
 
-// Cargar variables de entorno (.env.local tiene prioridad sobre .env)
-const envLocalPath = path.resolve(__dirname, '../.env.local');
-if (fs.existsSync(envLocalPath)) {
-  console.log('🔧 Cargando configuración local (.env.local)');
-  dotenv.config({ path: envLocalPath });
+// Cargar variables de entorno
+// En producción (Render define RENDER=true), usar solo variables de entorno del sistema
+// En desarrollo local, cargar .env.local
+const isProduction = process.env.RENDER || process.env.NODE_ENV === 'production';
+if (!isProduction) {
+  const envLocalPath = path.resolve(__dirname, '../.env.local');
+  if (fs.existsSync(envLocalPath)) {
+    console.log('🔧 Cargando configuración local (.env.local)');
+    dotenv.config({ path: envLocalPath });
+  } else {
+    console.log('🔧 Cargando configuración (.env)');
+    dotenv.config();
+  }
 } else {
-  console.log('🔧 Cargando configuración de producción (.env)');
-  dotenv.config();
+  console.log('🔧 Modo PRODUCCIÓN - usando variables de entorno del sistema');
 }
 
 // Conectar a la base de datos y ejecutar seeds
