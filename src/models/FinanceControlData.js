@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const financeItemSchema = new mongoose.Schema({
   type: {
     type: String,
-    enum: ['subscription', 'debt_i_owe', 'debt_owed_to_me', 'other_income', 'expense', 'savings_goal', 'prepaid_transfer', 'prepaid_expense'],
+    enum: ['subscription', 'debt_i_owe', 'debt_owed_to_me', 'other_income', 'expense', 'savings_goal', 'prepaid_transfer', 'prepaid_expense', 'credit_card_purchase', 'credit_card_payment'],
     required: true
   },
   name: { type: String, required: true, trim: true },

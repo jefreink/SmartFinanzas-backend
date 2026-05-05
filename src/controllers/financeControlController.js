@@ -5,6 +5,20 @@
  */
 
 const FinanceControlData = require('../models/FinanceControlData');
+const UserCategory = require('../models/UserCategory');
+
+// Categorías por defecto
+const DEFAULT_CATEGORIES = [
+  { name: 'Alimentación', color: '#FF6B6B' },
+  { name: 'Transporte', color: '#4ECDC4' },
+  { name: 'Vivienda', color: '#45B7D1' },
+  { name: 'Entretenimiento', color: '#96CEB4' },
+  { name: 'Salud', color: '#FFEAA7' },
+  { name: 'Educación', color: '#DDA0DD' },
+  { name: 'Vestuario', color: '#98D8C8' },
+  { name: 'Servicios', color: '#F7DC6F' },
+  { name: 'Otros', color: '#B0BEC5' }
+];
 
 // Helper: mes actual como string "YYYY-MM"
 const getCurrentMonth = () => {
@@ -13,7 +27,7 @@ const getCurrentMonth = () => {
 };
 
 /**
- * @desc    Obtener datos del mes actual (o crear vacío)
+ * @desc    Obtener datos del mes (o crear vacío con datos del mes anterior)
  * @route   GET /api/finance-control/current
  * @access  Private
  */
@@ -24,17 +38,60 @@ const getCurrentData = async (req, res) => {
 
     let data = await FinanceControlData.findOne({ user: userId, month });
     if (!data) {
+      // Buscar el mes anterior para auto-completar lastMonthTotal
+      const [year, mon] = month.split('-').map(Number);
+      const prevDate = new Date(year, mon - 2, 1);
+      const prevMonth = `${prevDate.getFullYear()}-${String(prevDate.getMonth() + 1).padStart(2, '0')}`;
+      const prevData = await FinanceControlData.findOne({ user: userId, month: prevMonth });
+
+      let lastMonthTotal = 0;
+      if (prevData) {
+        // Calcular egresos del mes anterior
+        const prevItems = prevData.items || [];
+        lastMonthTotal = prevItems
+          .filter(i => ['expense', 'subscription', 'debt_i_owe', 'prepaid_transfer', 'credit_card_payment'].includes(i.type))
+          .reduce((sum, i) => sum + i.amount, 0);
+      }
+
       data = await FinanceControlData.create({
         user: userId,
         month,
         salary: { gross: 0, deductions: { afp: 0, health: 0, other: 0 }, net: 0 },
         items: [],
-        lastMonthTotal: 0
+        lastMonthTotal
       });
     }
     res.json({ success: true, data });
   } catch (error) {
     console.error('Error getting finance control data:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+/**
+ * @desc    Obtener historial de meses disponibles
+ * @route   GET /api/finance-control/history
+ * @access  Private
+ */
+const getHistory = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const months = await FinanceControlData.find(
+      { user: userId },
+      { month: 1, 'salary.net': 1, items: 1, _id: 0 }
+    ).sort({ month: -1 }).lean();
+
+    // Resumen ligero por mes
+    const history = months.map(m => {
+      const items = m.items || [];
+      const income = (m.salary?.net || 0) + items.filter(i => i.type === 'other_income').reduce((s, i) => s + i.amount, 0);
+      const expenses = items.filter(i => ['expense', 'subscription', 'debt_i_owe', 'prepaid_transfer', 'credit_card_payment'].includes(i.type)).reduce((s, i) => s + i.amount, 0);
+      return { month: m.month, income, expenses, balance: income - expenses, itemCount: items.length };
+    });
+
+    res.json({ success: true, data: history });
+  } catch (error) {
+    console.error('Error getting history:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -190,12 +247,93 @@ const resetMonth = async (req, res) => {
   }
 };
 
+/**
+ * @desc    Obtener categorías del usuario (default + custom)
+ * @route   GET /api/finance-control/categories
+ * @access  Private
+ */
+const getCategories = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    let userCat = await UserCategory.findOne({ user: userId });
+    if (!userCat) {
+      userCat = await UserCategory.create({ user: userId, categories: [] });
+    }
+    // Combinar default + custom
+    const all = [...DEFAULT_CATEGORIES, ...userCat.categories];
+    res.json({ success: true, data: { defaults: DEFAULT_CATEGORIES, custom: userCat.categories, all } });
+  } catch (error) {
+    console.error('Error getting categories:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+/**
+ * @desc    Agregar categoría personalizada
+ * @route   POST /api/finance-control/categories
+ * @access  Private
+ */
+const addCategory = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { name, color } = req.body;
+    if (!name || !name.trim()) return res.status(400).json({ success: false, message: 'Nombre requerido' });
+
+    let userCat = await UserCategory.findOne({ user: userId });
+    if (!userCat) {
+      userCat = await UserCategory.create({ user: userId, categories: [] });
+    }
+
+    // Verificar que no exista ya (ni en default ni en custom)
+    const allNames = [...DEFAULT_CATEGORIES.map(c => c.name.toLowerCase()), ...userCat.categories.map(c => c.name.toLowerCase())];
+    if (allNames.includes(name.trim().toLowerCase())) {
+      return res.status(400).json({ success: false, message: 'La categoría ya existe' });
+    }
+
+    userCat.categories.push({ name: name.trim(), color: color || '#B0BEC5' });
+    await userCat.save();
+
+    res.json({ success: true, data: userCat.categories });
+  } catch (error) {
+    console.error('Error adding category:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+/**
+ * @desc    Eliminar categoría personalizada
+ * @route   DELETE /api/finance-control/categories/:categoryId
+ * @access  Private
+ */
+const deleteCategory = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { categoryId } = req.params;
+
+    const userCat = await UserCategory.findOneAndUpdate(
+      { user: userId },
+      { $pull: { categories: { _id: categoryId } } },
+      { new: true }
+    );
+    if (!userCat) return res.status(404).json({ success: false, message: 'No encontrado' });
+
+    res.json({ success: true, data: userCat.categories });
+  } catch (error) {
+    console.error('Error deleting category:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   getCurrentData,
+  getHistory,
   updateSalary,
   addItem,
   updateItem,
   deleteItem,
   updateLastMonth,
-  resetMonth
+  resetMonth,
+  getCategories,
+  addCategory,
+  deleteCategory
 };
