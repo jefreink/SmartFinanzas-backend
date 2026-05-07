@@ -11,7 +11,9 @@ const financeItemSchema = new mongoose.Schema({
   person: { type: String, trim: true, default: '' },
   category: { type: String, default: null },
   date: { type: String, default: '' },
-  paid: { type: Boolean, default: false }
+  paid: { type: Boolean, default: false },
+  balanceBefore: { type: Number, default: null },
+  balanceAfter: { type: Number, default: null }
 }, { timestamps: true });
 
 const financeControlDataSchema = new mongoose.Schema({

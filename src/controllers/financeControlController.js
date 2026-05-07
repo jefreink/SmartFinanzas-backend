@@ -124,6 +124,54 @@ const updateSalary = async (req, res) => {
   }
 };
 
+// Helper: calcula el balance actual a partir de los datos del mes
+const calculateBalance = (data) => {
+  const net = data.salary?.net || 0;
+  let totalEgresos = 0;
+  let totalOtherIncome = 0;
+  let totalPaidOwedToMe = 0;
+
+  (data.items || []).forEach(item => {
+    switch (item.type) {
+      case 'expense':
+      case 'subscription':
+      case 'debt_i_owe':
+      case 'prepaid_transfer':
+      case 'credit_card_payment':
+        totalEgresos += item.amount;
+        break;
+      case 'other_income':
+        totalOtherIncome += item.amount;
+        break;
+      case 'debt_owed_to_me':
+        if (item.paid) totalPaidOwedToMe += item.amount;
+        else totalEgresos += item.amount;
+        break;
+      // credit_card_purchase, savings_goal, prepaid_expense no afectan balance principal directamente
+    }
+  });
+
+  return net + totalOtherIncome - totalEgresos + totalPaidOwedToMe;
+};
+
+// Helper: calcula el impacto de un item en el balance
+const getItemImpact = (type, amount, paid) => {
+  switch (type) {
+    case 'expense':
+    case 'subscription':
+    case 'debt_i_owe':
+    case 'prepaid_transfer':
+    case 'credit_card_payment':
+      return -amount;
+    case 'other_income':
+      return +amount;
+    case 'debt_owed_to_me':
+      return paid ? +amount : -amount;
+    default:
+      return 0;
+  }
+};
+
 /**
  * @desc    Agregar item
  * @route   POST /api/finance-control/items
@@ -135,11 +183,19 @@ const addItem = async (req, res) => {
     const month = req.body.month || getCurrentMonth();
     const { type, name, amount, person, category, date, paid } = req.body;
 
-    const data = await FinanceControlData.findOneAndUpdate(
-      { user: userId, month },
-      { $push: { items: { type, name, amount, person, category, date, paid: paid || false } } },
-      { new: true, upsert: true }
-    );
+    // Obtener datos actuales para calcular balance antes
+    let data = await FinanceControlData.findOne({ user: userId, month });
+    if (!data) {
+      data = await FinanceControlData.create({ user: userId, month, items: [] });
+    }
+
+    const balanceBefore = calculateBalance(data);
+    const impact = getItemImpact(type, amount, paid || false);
+    const balanceAfter = balanceBefore + impact;
+
+    data.items.push({ type, name, amount, person, category, date, paid: paid || false, balanceBefore, balanceAfter });
+    await data.save();
+
     const newItem = data.items[data.items.length - 1];
     res.json({ success: true, data: newItem });
   } catch (error) {
