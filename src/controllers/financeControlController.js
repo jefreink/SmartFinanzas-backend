@@ -380,6 +380,51 @@ const deleteCategory = async (req, res) => {
   }
 };
 
+/**
+ * @desc    Recalcular balances de todos los items existentes (migración)
+ * @route   POST /api/finance-control/recalculate-balances
+ * @access  Private
+ */
+const recalculateBalances = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    // Obtener todos los meses del usuario
+    const allMonths = await FinanceControlData.find({ user: userId }).sort({ month: 1 });
+    let totalUpdated = 0;
+
+    for (const monthData of allMonths) {
+      // Ordenar items por createdAt
+      const sortedItems = [...monthData.items].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+      const net = monthData.salary?.net || 0;
+      let runningBalance = net;
+
+      for (const item of sortedItems) {
+        const impact = getItemImpact(item.type, item.amount, item.paid);
+        const balanceBefore = runningBalance;
+        const balanceAfter = runningBalance + impact;
+
+        // Actualizar el item en el array
+        const itemInDoc = monthData.items.id(item._id);
+        if (itemInDoc) {
+          itemInDoc.balanceBefore = balanceBefore;
+          itemInDoc.balanceAfter = balanceAfter;
+          totalUpdated++;
+        }
+
+        runningBalance = balanceAfter;
+      }
+
+      await monthData.save();
+    }
+
+    res.json({ success: true, message: `Balances recalculados para ${totalUpdated} items en ${allMonths.length} meses` });
+  } catch (error) {
+    console.error('Error recalculating balances:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   getCurrentData,
   getHistory,
@@ -391,5 +436,6 @@ module.exports = {
   resetMonth,
   getCategories,
   addCategory,
-  deleteCategory
+  deleteCategory,
+  recalculateBalances
 };

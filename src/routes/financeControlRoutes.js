@@ -17,7 +17,8 @@ const {
   resetMonth,
   getCategories,
   addCategory,
-  deleteCategory
+  deleteCategory,
+  recalculateBalances
 } = require('../controllers/financeControlController');
 
 router.use(protect);
@@ -33,5 +34,6 @@ router.delete('/reset', resetMonth);
 router.get('/categories', getCategories);
 router.post('/categories', addCategory);
 router.delete('/categories/:categoryId', deleteCategory);
+router.post('/recalculate-balances', recalculateBalances);
 
 module.exports = router;
