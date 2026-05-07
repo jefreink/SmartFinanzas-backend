@@ -38,9 +38,18 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(cors());
 
-// Logging middleware para debugging
+// Logging middleware con métricas
 app.use((req, res, next) => {
-  console.log(`📨 ${req.method} ${req.path}`);
+  const start = Date.now();
+  const timestamp = new Date().toISOString();
+
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    const status = res.statusCode;
+    const statusIcon = status >= 500 ? '❌' : status >= 400 ? '⚠️' : status >= 300 ? '↩️' : '✅';
+    console.log(`${statusIcon} [${timestamp}] ${req.method} ${req.originalUrl} → ${status} (${duration}ms)`);
+  });
+
   next();
 });
 
