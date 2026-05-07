@@ -199,7 +199,7 @@ const addItem = async (req, res) => {
   try {
     const userId = req.user.id;
     const month = req.body.month || getCurrentMonth();
-    const { type, name, amount, person, category, date, paid } = req.body;
+    const { type, name, amount, person, category, date, paid, account } = req.body;
 
     // Obtener datos actuales para calcular balance antes
     let data = await FinanceControlData.findOne({ user: userId, month });
@@ -215,19 +215,20 @@ const addItem = async (req, res) => {
       const impact = getItemImpact(type, amount, paid || false);
       balanceAfter = balanceBefore + impact;
     } else {
-      // Calcular balance del pool específico (prepago o tarjeta de crédito)
+      // Calcular balance del pool específico, filtrado por cuenta si aplica
       const poolTypes = pool === 'prepaid'
         ? ['prepaid_transfer', 'prepaid_expense']
         : ['credit_card_purchase', 'credit_card_payment'];
+      const accountName = account || null;
       let poolBalance = 0;
-      data.items.filter(i => poolTypes.includes(i.type)).forEach(i => {
+      data.items.filter(i => poolTypes.includes(i.type) && (i.account || null) === accountName).forEach(i => {
         poolBalance += getPoolImpact(i.type, i.amount);
       });
       balanceBefore = poolBalance;
       balanceAfter = poolBalance + getPoolImpact(type, amount);
     }
 
-    data.items.push({ type, name, amount, person, category, date, paid: paid || false, balanceBefore, balanceAfter });
+    data.items.push({ type, name, amount, person, category, date, paid: paid || false, account: account || null, balanceBefore, balanceAfter });
     await data.save();
 
     const newItem = data.items[data.items.length - 1];
@@ -433,7 +434,7 @@ const recalculateBalances = async (req, res) => {
       const net = monthData.salary?.net || 0;
       let runningGeneral = net;
       let runningPrepaid = 0;
-      let runningCreditCard = 0;
+      const runningAccounts = {}; // { accountName: balance }
 
       for (const item of sortedItems) {
         const pool = getBalancePool(item.type);
@@ -449,9 +450,12 @@ const recalculateBalances = async (req, res) => {
           balanceAfter = runningPrepaid + getPoolImpact(item.type, item.amount);
           runningPrepaid = balanceAfter;
         } else {
-          balanceBefore = runningCreditCard;
-          balanceAfter = runningCreditCard + getPoolImpact(item.type, item.amount);
-          runningCreditCard = balanceAfter;
+          // credit_card - agrupar por account
+          const accKey = item.account || '__default__';
+          if (runningAccounts[accKey] == null) runningAccounts[accKey] = 0;
+          balanceBefore = runningAccounts[accKey];
+          balanceAfter = runningAccounts[accKey] + getPoolImpact(item.type, item.amount);
+          runningAccounts[accKey] = balanceAfter;
         }
 
         // Actualizar el item en el array

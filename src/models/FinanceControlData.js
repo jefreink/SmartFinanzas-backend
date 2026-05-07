@@ -12,6 +12,7 @@ const financeItemSchema = new mongoose.Schema({
   category: { type: String, default: null },
   date: { type: String, default: '' },
   paid: { type: Boolean, default: false },
+  account: { type: String, default: null },
   balanceBefore: { type: Number, default: null },
   balanceAfter: { type: Number, default: null }
 }, { timestamps: true });
