@@ -154,7 +154,7 @@ const calculateBalance = (data) => {
   return net + totalOtherIncome - totalEgresos + totalPaidOwedToMe;
 };
 
-// Helper: calcula el impacto de un item en el balance
+// Helper: calcula el impacto de un item en el balance GENERAL
 const getItemImpact = (type, amount, paid) => {
   switch (type) {
     case 'expense':
@@ -169,6 +169,24 @@ const getItemImpact = (type, amount, paid) => {
       return paid ? +amount : -amount;
     default:
       return 0;
+  }
+};
+
+// Helper: determina a qué "pool" pertenece un item
+const getBalancePool = (type) => {
+  if (type === 'prepaid_transfer' || type === 'prepaid_expense') return 'prepaid';
+  if (type === 'credit_card_purchase' || type === 'credit_card_payment') return 'credit_card';
+  return 'general';
+};
+
+// Helper: impacto dentro de su propio pool
+const getPoolImpact = (type, amount) => {
+  switch (type) {
+    case 'prepaid_transfer': return +amount;   // entra dinero a prepago
+    case 'prepaid_expense': return -amount;    // sale dinero de prepago
+    case 'credit_card_purchase': return +amount; // sube la deuda
+    case 'credit_card_payment': return -amount;  // baja la deuda
+    default: return 0;
   }
 };
 
@@ -189,9 +207,25 @@ const addItem = async (req, res) => {
       data = await FinanceControlData.create({ user: userId, month, items: [] });
     }
 
-    const balanceBefore = calculateBalance(data);
-    const impact = getItemImpact(type, amount, paid || false);
-    const balanceAfter = balanceBefore + impact;
+    const pool = getBalancePool(type);
+    let balanceBefore, balanceAfter;
+
+    if (pool === 'general') {
+      balanceBefore = calculateBalance(data);
+      const impact = getItemImpact(type, amount, paid || false);
+      balanceAfter = balanceBefore + impact;
+    } else {
+      // Calcular balance del pool específico (prepago o tarjeta de crédito)
+      const poolTypes = pool === 'prepaid'
+        ? ['prepaid_transfer', 'prepaid_expense']
+        : ['credit_card_purchase', 'credit_card_payment'];
+      let poolBalance = 0;
+      data.items.filter(i => poolTypes.includes(i.type)).forEach(i => {
+        poolBalance += getPoolImpact(i.type, i.amount);
+      });
+      balanceBefore = poolBalance;
+      balanceAfter = poolBalance + getPoolImpact(type, amount);
+    }
 
     data.items.push({ type, name, amount, person, category, date, paid: paid || false, balanceBefore, balanceAfter });
     await data.save();
@@ -397,12 +431,28 @@ const recalculateBalances = async (req, res) => {
       const sortedItems = [...monthData.items].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
       const net = monthData.salary?.net || 0;
-      let runningBalance = net;
+      let runningGeneral = net;
+      let runningPrepaid = 0;
+      let runningCreditCard = 0;
 
       for (const item of sortedItems) {
-        const impact = getItemImpact(item.type, item.amount, item.paid);
-        const balanceBefore = runningBalance;
-        const balanceAfter = runningBalance + impact;
+        const pool = getBalancePool(item.type);
+        let balanceBefore, balanceAfter;
+
+        if (pool === 'general') {
+          balanceBefore = runningGeneral;
+          const impact = getItemImpact(item.type, item.amount, item.paid);
+          balanceAfter = runningGeneral + impact;
+          runningGeneral = balanceAfter;
+        } else if (pool === 'prepaid') {
+          balanceBefore = runningPrepaid;
+          balanceAfter = runningPrepaid + getPoolImpact(item.type, item.amount);
+          runningPrepaid = balanceAfter;
+        } else {
+          balanceBefore = runningCreditCard;
+          balanceAfter = runningCreditCard + getPoolImpact(item.type, item.amount);
+          runningCreditCard = balanceAfter;
+        }
 
         // Actualizar el item en el array
         const itemInDoc = monthData.items.id(item._id);
@@ -411,8 +461,6 @@ const recalculateBalances = async (req, res) => {
           itemInDoc.balanceAfter = balanceAfter;
           totalUpdated++;
         }
-
-        runningBalance = balanceAfter;
       }
 
       await monthData.save();
